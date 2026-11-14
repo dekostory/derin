@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, viewport-fit=cover">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-title" content="Derin">
+		<meta name="theme-color" content="#0d0a0f">
 		<title>Derin</title>
 		<style>
 html, body, #canvas {
@@ -94,6 +95,7 @@ body {
 		</style>
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+<link rel="manifest" href="index.manifest.json">
 
 	</head>
 	<body>
@@ -115,9 +117,24 @@ body {
 // Telefon ekranlarında çizim çözünürlüğünü en çok 2× ile sınırla (3× ekranlarda kasmayı azaltır)
 (function () { var gercek = window.devicePixelRatio || 1; try { Object.defineProperty(window, "devicePixelRatio", { get: function () { return Math.min(2, gercek); } }); } catch (e) {} }());
 </script>
+<script>
+// PWA güncellemesi: yeni sürüm yayınlandıysa eski önbellekte takılmadan bir kez yenile
+if ("serviceWorker" in navigator) {
+	navigator.serviceWorker.getRegistration().then(function (reg) {
+		if (!reg) { return; }
+		function yenile(sw) { if (sw && navigator.serviceWorker.controller) { sw.postMessage("update"); } }
+		if (reg.waiting) { yenile(reg.waiting); }
+		reg.addEventListener("updatefound", function () {
+			var sw = reg.installing;
+			if (sw) { sw.addEventListener("statechange", function () { if (sw.state === "installed") { yenile(sw); } }); }
+		});
+		reg.update();
+	});
+}
+</script>
 <script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":1732452,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":1827344,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
