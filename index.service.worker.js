@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1794815638|3620186';
+const CACHE_VERSION = '1795125459|2163838';
 /** @type {string} */
 const CACHE_PREFIX = 'Derin-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
